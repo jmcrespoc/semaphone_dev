@@ -1,2 +1,29 @@
-sudo apt update
-sudo apt full-upgrade -y
+---
+- name: Actualización de Raspbian
+  hosts: maquinas
+  become: yes
+  tasks:
+    - name: Actualizar lista de paquetes
+      apt:
+        update_cache: yes
+
+    - name: Actualizar todos los paquetes instalados
+      apt:
+        upgrade: yes
+        autoremove: yes
+
+    - name: Realizar full-upgrade
+      apt:
+        upgrade: dist
+
+    - name: Limpiar paquetes no necesarios
+      apt:
+        autoclean: yes
+
+    - name: Verificar versión actual de Raspbian
+      command: lsb_release -a
+      register: raspbian_version
+
+    - name: Mostrar versión de Raspbian
+      debug:
+        var: raspbian_version.stdout_lines
