@@ -1,5 +1,6 @@
 ---
 - name: Actualización de Raspbian
+  hosts:servidor_pruenas
   become: yes
   tasks:
     - name: Actualizar lista de paquetes
