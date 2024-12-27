@@ -1,29 +1,5 @@
----
-- name: Actualización de Raspbian
+- name: Probar conexión SSH
   hosts: servidor_pruebas
-  become: yes
   tasks:
-    - name: Actualizar lista de paquetes
-      apt:
-        update_cache: yes
-
-    - name: Actualizar todos los paquetes instalados
-      apt:
-        upgrade: yes
-        autoremove: yes
-
-    - name: Realizar full-upgrade
-      apt:
-        upgrade: dist
-
-    - name: Limpiar paquetes no necesarios
-      apt:
-        autoclean: yes
-
-    - name: Verificar versión actual de Raspbian
-      command: lsb_release -a
-      register: raspbian_version
-
-    - name: Mostrar versión de Raspbian
-      debug:
-        var: raspbian_version.stdout_lines
+    - name: Verificar conectividad SSH
+      ping:
