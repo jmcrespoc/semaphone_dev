@@ -1,6 +1,5 @@
 ---
 - name: Actualización de Raspbian
-  hosts: maquinas
   become: yes
   tasks:
     - name: Actualizar lista de paquetes
