@@ -2,4 +2,4 @@
   hosts: servidor_pruebas
   tasks:
     - name: Verificar conectividad SSH
-      ping:
+      ping: google.com
