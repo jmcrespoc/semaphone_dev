@@ -2,12 +2,15 @@
   hosts: servidor_pruebas
   become: yes  # Habilita sudo
   tasks:
-    - name: Actualizar lista de paquetes
+    - name: APT_UPDATE
       apt:
         update_cache: yes
-      register: resultado_update
-
-    - name: Mostrar resultado
-      debug:
-        var: resultado_update
-
+    - name: APT UPGRADE
+      apt:
+        upgrade: yes
+    - name: AUTOREMOVE
+      apt: 
+        autoremove: yes
+    - name: LIMPIAR ARCHIVOS TEMPORALES
+      apt:
+        autoclean: yes
