@@ -1,0 +1,37 @@
+---
+- name: Actualizar Portainer en Docker
+  hosts: servidor_pruebas
+  become: yes
+  tasks:
+    - name: Descargar la última imagen de Portainer
+      docker_image:
+        name: portainer/portainer-ce
+        tag: latest
+        source: pull
+
+    - name: Detener y eliminar el contenedor actual de Portainer
+      docker_container:
+        name: portainer
+        state: absent
+
+    - name: Iniciar un nuevo contenedor de Portainer
+      docker_container:
+        name: portainer
+        image: portainer/portainer-ce:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "8000:8000"
+          - "9443:9443"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data
+
+    - name: Verificar estado del contenedor de Portainer
+      command: docker ps
+      register: docker_status
+      changed_when: false
+
+    - name: Mostrar estado de los contenedores Docker
+      debug:
+        var: docker_status.stdout_lines
