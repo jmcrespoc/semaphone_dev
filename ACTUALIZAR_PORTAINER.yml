@@ -1,11 +1,17 @@
 ---
-- name: Actualizar Portainer en Docker
-  hosts: servidor_pruebas
+- name: Actualizar Portainer y Portainer Agent en Docker
+  hosts: servidores
   become: yes
   tasks:
-    - name: Descargar la última imagen de Portainer
+    - name: Descargar la última imagen de Portainer CE
       docker_image:
         name: portainer/portainer-ce
+        tag: latest
+        source: pull
+
+    - name: Descargar la última imagen de Portainer Agent
+      docker_image:
+        name: portainer/agent
         tag: latest
         source: pull
 
@@ -14,7 +20,12 @@
         name: portainer
         state: absent
 
-    - name: Iniciar un nuevo contenedor de Portainer
+    - name: Detener y eliminar el contenedor actual de Portainer Agent
+      docker_container:
+        name: portainer_agent
+        state: absent
+
+    - name: Iniciar el nuevo contenedor de Portainer
       docker_container:
         name: portainer
         image: portainer/portainer-ce:latest
@@ -27,7 +38,22 @@
           - /var/run/docker.sock:/var/run/docker.sock
           - portainer_data:/data
 
-    - name: Verificar estado del contenedor de Portainer
+    - name: Iniciar el nuevo contenedor de Portainer Agent
+      docker_container:
+        name: portainer_agent
+        image: portainer/agent:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "9001:9001"
+        volumes:
+          - /var/lib/docker/volumes:/var/lib/docker/volumes
+          - /:/host
+        env:
+          AGENT_CLUSTER_ADDR: portainer_agent
+          LOG_LEVEL: debug
+
+    - name: Verificar el estado de los contenedores Docker
       command: docker ps
       register: docker_status
       changed_when: false
