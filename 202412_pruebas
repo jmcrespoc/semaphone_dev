@@ -1,3 +1,4 @@
+- name: Actualizar lista de paquetes
 hosts: servidor_pruebas
 become: yes  # Ejecutar con sudo
 tasks:   
