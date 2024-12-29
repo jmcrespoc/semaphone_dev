@@ -1,12 +1,13 @@
-- name: Actualizar lista de paquetes
+- name: Actualizar paquetes con apt-get
   hosts: servidor_pruebas
-  become: yes  # Ejecutar con sudo
-  tasks:   
+  become: yes  # Habilita sudo
+  tasks:
     - name: Actualizar lista de paquetes
       apt:
         update_cache: yes
       register: resultado_update
-    - name: Mostrar resultado de la actualización
+
+    - name: Mostrar resultado
       debug:
         var: resultado_update
-      register: resultado_update
+
