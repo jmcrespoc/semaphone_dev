@@ -1,5 +1,1 @@
-- name: Probar conexión SSH
-  hosts: servidor_pruebas
-  tasks:
-    - name: Verificar conectividad SSH
-      ping: google.com
+sudo apt-get update
