@@ -14,3 +14,11 @@
     - name: LIMPIAR ARCHIVOS TEMPORALES
       apt:
         autoclean: yes
+    - name: Verificar si se requiere reinicio
+      stat:
+        path: /var/run/reboot-required
+      register: reboot_required
+    # Reiniciar solo si el archivo existe
+    - name: Reiniciar el sistema si es necesario
+      reboot:
+      when: reboot_required.stat.exists
