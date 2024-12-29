@@ -1,6 +1,6 @@
 ---
 - name: Actualizar Portainer y Portainer Agent en Docker
-  hosts: servidores
+  hosts: servidor_pruebas
   become: yes
   tasks:
     - name: Descargar la última imagen de Portainer CE
